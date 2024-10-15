@@ -80,7 +80,7 @@ fun BasicOperations(name: String, modifier: Modifier = Modifier) {
 
         Button( onClick = {
             // ToDo 2: create explicit intent to open a new activity
-            context.startActivity(Intent(context, MainActivity::class.java))
+            
         },
             modifier= Modifier.padding(start = 40.dp, end = 40.dp)) {
             Icon( imageVector = Icons.Default.Info, contentDescription = "Phone")
