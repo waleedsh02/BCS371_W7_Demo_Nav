@@ -2,17 +2,13 @@ package edu.farmingdale.bcs371_w7_demo_nav
 
 
 import android.content.Intent
-import android.transition.Fade
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -33,7 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -62,8 +57,22 @@ fun Navigation() {
             SecondScreen(navController)
         }
 
-        // ToDo 7: Add more nav screens here for the pizza party and gpa calculator
+        composable("pizza_party") {
+            PizzaPartyScreen(navController)
+        }
 
+        composable("gpa_calculator") {
+            gpaappFun(navController)
+        }
+
+        // ToDo 7: Add more nav screens here for the pizza party and gpa calculator
+        composable("pizza_party") {
+            PizzaPartyScreen(navController)
+        }
+
+        composable("gpa_calculator") {
+            gpaappFun(navController)
+        }
 
     }
 
@@ -91,21 +100,30 @@ fun FirstScreen(navController: NavController) {
 @Composable
 fun SecondScreen(navController: NavController) {
     var sliderValue by remember { mutableStateOf(0.5f) }
-
+    var SliderEnabled by remember { mutableStateOf(true) }
     val context = LocalContext.current
     Column ( modifier = Modifier.padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally){
-        Slider(value = sliderValue, onValueChange = { sliderValue=it }, Modifier.fillMaxWidth())
+        Slider(value = sliderValue, onValueChange = { sliderValue=it }, Modifier.fillMaxWidth(), enabled = SliderEnabled)
 
-        Text (fontSize = 20.sp, text = "Second Screen")
+        Text (fontSize = 40.sp, text = "Second Screen")
 
         Button(onClick = { context.startActivity(Intent(context, MainActivity2::class.java)) }) {
             Text(fontSize = 20.sp, text ="Go to other Activity")
         }
 
+        Button(onClick = { navController.navigate("pizza_party") }) {
+            Text(fontSize = 20.sp, text = "Lets go to Pizza Party")
+        }
+
+        // Button to navigate to GPA Calculator screen
+        Button(onClick = { navController.navigate("gpa_calculator") }) {
+            Text(fontSize = 20.sp, text = "lets go to GPA Calculator")
+        }
+
         // ToDo 8: when the switch is off, disable the slider
-        Checkbox(checked = true, onCheckedChange = {  }, modifier = Modifier.padding(10.dp))
+        Checkbox(checked = SliderEnabled, onCheckedChange = {isChecked -> SliderEnabled = isChecked  }, modifier = Modifier.padding(10.dp))
 
     }
 
@@ -131,3 +149,5 @@ fun SpalshScreen(navController: NavController){
         Image(painter = painterResource(id = R.drawable.fsclogo), contentDescription ="" )
     }
 }
+
+// all the steps are accomplished in this NewClass
